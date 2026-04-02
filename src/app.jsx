@@ -12,7 +12,8 @@ export default function App() {
       <section>
         <h2>About Me</h2>
         <p>
-          Registered Nurse transitioning into a Medical Virtual Assistant role with expertise in EMR/EHR, telehealth, and patient coordination.
+          Registered Nurse transitioning into a Medical Virtual Assistant role 
+          with expertise in EMR/EHR, telehealth, and patient coordination.
         </p>
       </section>
 
