@@ -18,18 +18,18 @@ import {
 import * as THREE from "three";
 
 const bubbleItems = [
-  { title: "EHR", subtitle: "Patient charts", icon: FaFileWaveform, color: "#8fdcff", shell: "#f7fbff", position: [-4.3, 1.8, -0.8], size: 1.05 },
-  { title: "SOAP", subtitle: "Clinical notes", icon: FaNotesMedical, color: "#ffd86d", shell: "#fff9f1", position: [-2.15, 2.85, -0.3], size: 0.92 },
-  { title: "Telehealth", subtitle: "Virtual support", icon: FaLaptopMedical, color: "#ffb0ef", shell: "#fff8ff", position: [0.15, 3.1, -0.2], size: 0.96 },
-  { title: "Vitals", subtitle: "Heart & BP", icon: FaHeartPulse, color: "#8fdcff", shell: "#f9fbff", position: [2.75, 2.45, -0.4], size: 1.02 },
-  { title: "Intake", subtitle: "Forms & triage", icon: FaHospitalUser, color: "#73ffd8", shell: "#f5fffd", position: [4.45, 1.15, -0.9], size: 0.92 },
-  { title: "Stetho", subtitle: "Assessment", icon: FaStethoscope, color: "#ffd86d", shell: "#fffdf6", position: [-4.65, -0.55, -0.2], size: 0.98 },
-  { title: "Claims", subtitle: "Benefits follow-up", icon: FaShieldHeart, color: "#cda4ff", shell: "#f9f6ff", position: [-2.25, 0.3, 0.6], size: 1.08 },
-  { title: "Calendar", subtitle: "Scheduling", icon: FaCalendarCheck, color: "#8fdcff", shell: "#f6fbff", position: [0.15, 0.85, 0.72], size: 1.16 },
-  { title: "Rx", subtitle: "Medication", icon: FaPrescriptionBottleMedical, color: "#ffb0ef", shell: "#fff7fc", position: [2.45, 0.2, 0.58], size: 1.02 },
-  { title: "Labs", subtitle: "Results support", icon: FaMicroscope, color: "#73ffd8", shell: "#f5fffd", position: [4.7, -0.75, -0.1], size: 0.94 },
-  { title: "Referrals", subtitle: "Provider routing", icon: FaUserDoctor, color: "#8fdcff", shell: "#f7fbff", position: [-3.35, -2.2, -0.7], size: 1.02 },
-  { title: "Admin", subtitle: "Process flow", icon: FaKitMedical, color: "#ffd86d", shell: "#fffbf3", position: [-0.95, -2.55, -0.25], size: 1.06 },
+  { title: "EHR", subtitle: "Patient charts", icon: FaFileWaveform, color: "#8fdcff", shell: "#f4d8df", position: [-4.35, 1.55, -0.7], size: 1.04 },
+  { title: "SOAP", subtitle: "Clinical notes", icon: FaNotesMedical, color: "#ffd86d", shell: "#f2cfd7", position: [-2.25, 2.82, -0.26], size: 0.92 },
+  { title: "Telehealth", subtitle: "Virtual support", icon: FaLaptopMedical, color: "#ffb0ef", shell: "#f3d6e2", position: [2.1, 2.86, -0.2], size: 0.96 },
+  { title: "Vitals", subtitle: "Heart & BP", icon: FaHeartPulse, color: "#8fdcff", shell: "#eed5df", position: [4.25, 1.65, -0.74], size: 1.03 },
+  { title: "Stetho", subtitle: "Assessment", icon: FaStethoscope, color: "#ffd86d", shell: "#f5dde3", position: [-4.95, -0.15, -0.18], size: 0.98 },
+  { title: "Claims", subtitle: "Benefits follow-up", icon: FaShieldHeart, color: "#cda4ff", shell: "#f1d4dd", position: [-2.38, 0.72, 0.54], size: 1.08 },
+  { title: "Calendar", subtitle: "Scheduling", icon: FaCalendarCheck, color: "#8fdcff", shell: "#f2d9df", position: [-0.65, 0.78, 0.72], size: 1.18 },
+  { title: "Intake", subtitle: "Forms & triage", icon: FaHospitalUser, color: "#73ffd8", shell: "#f4dce4", position: [3.72, 0.7, 0.56], size: 0.96 },
+  { title: "Rx", subtitle: "Medication", icon: FaPrescriptionBottleMedical, color: "#ffb0ef", shell: "#f2d2dd", position: [1.85, -0.08, 0.54], size: 1.04 },
+  { title: "Labs", subtitle: "Results support", icon: FaMicroscope, color: "#73ffd8", shell: "#edd3dc", position: [4.95, -0.4, -0.1], size: 0.95 },
+  { title: "Referrals", subtitle: "Provider routing", icon: FaUserDoctor, color: "#8fdcff", shell: "#f4dbe2", position: [-3.2, -2.02, -0.56], size: 1.02 },
+  { title: "Admin", subtitle: "Process flow", icon: FaKitMedical, color: "#ffd86d", shell: "#f1cfd8", position: [0.95, -2.02, -0.24], size: 1.08 },
 ];
 
 function Bubble({ item, index, positionsRef, velocitiesRef }) {
@@ -89,13 +89,13 @@ function Bubble({ item, index, positionsRef, velocitiesRef }) {
           <sphereGeometry args={[item.size, 56, 56]} />
           <meshPhysicalMaterial
             color={item.shell}
-            roughness={0.12}
+            roughness={0.16}
             metalness={0.04}
             clearcoat={1}
             clearcoatRoughness={0.08}
             transmission={0.04}
             emissive={item.color}
-            emissiveIntensity={0.03}
+            emissiveIntensity={0.04}
           />
         </mesh>
 
@@ -129,7 +129,7 @@ function Cluster() {
   });
 
   return (
-    <group ref={groupRef} rotation={[0.06, -0.16, 0]}>
+    <group ref={groupRef} rotation={[0.04, -0.12, 0]}>
       {items.map((item, index) => (
         <Bubble
           item={item}
@@ -146,7 +146,11 @@ function Cluster() {
 export default function MedicalBubbles() {
   return (
     <div className="medical-bubbles-canvas">
-      <Canvas camera={{ position: [0, 0.35, 12.5], fov: 28 }} dpr={[1, 2]}>
+      <Canvas
+        camera={{ position: [0, 0.35, 12.5], fov: 28 }}
+        dpr={[1, 2]}
+        gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+      >
         <ambientLight intensity={1.1} />
         <directionalLight position={[5, 7, 5]} intensity={1.65} color="#fff7ef" />
         <pointLight color="#d9a0ff" position={[-5, 1, 6]} intensity={1.05} />
