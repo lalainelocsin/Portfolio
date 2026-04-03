@@ -18,7 +18,6 @@ import {
   SiZoom,
 } from "react-icons/si";
 import {
-  FaCalendarCheck,
   FaFacebookF,
   FaFileLines,
   FaFileWaveform,
@@ -72,23 +71,23 @@ const heroStrengths = [
   {
     icon: FaShieldHeart,
     title: "Calm patient-facing communication",
-    text: "Hospital experience built around timely endorsements, follow-up, and respectful support.",
+    text: "My hospital background trained me to communicate with care, follow-through, and professionalism under pressure.",
   },
   {
     icon: FaFileWaveform,
     title: "Records discipline and workflow accuracy",
-    text: "Strong fit for medical documentation, chart-prep support, and organized admin handling.",
+    text: "I bring detail-oriented habits that fit chart preparation, documentation support, and organized admin workflows.",
   },
   {
     icon: FaLaptopMedical,
     title: "Remote-ready healthcare support direction",
-    text: "Presented honestly for clinics, providers, and agencies needing dependable coordination assistance.",
+    text: "I am now positioning these strengths toward Medical VA and Healthcare VA work for clinics, providers, and agencies.",
   },
 ];
 
 const stackHighlights = [
-  "Hospital-based workflow familiarity",
-  "Healthcare terms and equipment cues shown as animated icon badges",
+  "Charting, referrals, intake, claims, and scheduling working together",
+  "Healthcare terms and equipment cues shown as animated clinical badges",
   "Responsive motion designed for desktop, tablet, and mobile viewing",
 ];
 
@@ -345,7 +344,7 @@ export default function App() {
         });
       },
       {
-        threshold: 0.14,
+        threshold: 0.12,
         rootMargin: "0px 0px -8% 0px",
       }
     );
@@ -370,15 +369,15 @@ export default function App() {
       const x = (event.clientX - rect.left) / rect.width;
       const y = (event.clientY - rect.top) / rect.height;
 
-      board.style.setProperty("--board-rotate-x", `${67 + (0.5 - y) * 9}deg`);
-      board.style.setProperty("--board-rotate-z", `${-31 + (x - 0.5) * 12}deg`);
+      board.style.setProperty("--board-rotate-x", `${66 + (0.5 - y) * 8}deg`);
+      board.style.setProperty("--board-rotate-z", `${-30 + (x - 0.5) * 12}deg`);
       board.style.setProperty("--board-glow-x", `${x * 100}%`);
       board.style.setProperty("--board-glow-y", `${y * 100}%`);
     };
 
     const handlePointerLeave = () => {
-      board.style.setProperty("--board-rotate-x", "67deg");
-      board.style.setProperty("--board-rotate-z", "-31deg");
+      board.style.setProperty("--board-rotate-x", "66deg");
+      board.style.setProperty("--board-rotate-z", "-30deg");
       board.style.setProperty("--board-glow-x", "50%");
       board.style.setProperty("--board-glow-y", "46%");
       setPressedTool(null);
@@ -398,7 +397,7 @@ export default function App() {
       if (pressedTool === null) {
         setActiveTool((current) => (current + 1) % toolKeys.length);
       }
-    }, 1700);
+    }, 1800);
 
     return () => {
       window.clearInterval(timer);
@@ -448,7 +447,7 @@ export default function App() {
             <h1 className="hero-name">
               LALAINE
               <br />
-              <span>LOCSIN</span>
+              LOCSIN
             </h1>
             <p className="hero-text">
               Registered Nurse with private and public hospital experience,
@@ -497,13 +496,13 @@ export default function App() {
               <ModelStage
                 assetPath="/models/nurse-hero.glb"
                 className="hero-model-stage"
-                modelScale={2.55}
-                modelPosition={[0, -2.25, 0]}
+                modelScale={2.5}
+                modelPosition={[0, -2.3, 0]}
                 modelRotation={[0, 0.18, 0]}
-                floatStrength={0.18}
-                cameraPosition={[0, 0.38, 5.35]}
+                floatStrength={0.16}
+                cameraPosition={[0, 0.35, 5.4]}
                 cameraFov={24}
-                shadowY={-3.05}
+                shadowY={-3.15}
                 shadowScale={13.5}
                 trackEyes
               />
@@ -513,16 +512,16 @@ export default function App() {
           <div className="hero-copy hero-copy-right" data-reveal style={{ transitionDelay: "240ms" }}>
             <p className="hero-kicker">Healthcare Virtual Assistant Candidate</p>
             <h2 className="hero-role">
-              PATIENT-
+              PATIENT CARE
               <br />
-              CENTERED
+              REMOTE
               <br />
-              REMOTE SUPPORT
+              SUPPORT
             </h2>
             <p className="hero-text">
-              Built around patient coordination, medical documentation,
-              telehealth support awareness, and dependable follow-through that
-              translates well into remote healthcare operations.
+              I am building my transition around patient coordination, medical
+              documentation, telehealth support awareness, and dependable
+              follow-through that translates well into remote healthcare operations.
             </p>
 
             <div className="hero-proof-list">
@@ -571,12 +570,12 @@ export default function App() {
 
         <section className="stack-section" id="stack" data-reveal>
           <div className="section-heading stack-heading" data-reveal style={{ transitionDelay: "80ms" }}>
-            <p className="section-kicker">MY HEALTHCARE STACK</p>
-            <h2>Healthcare language, systems, and equipment familiarity presented as animated floating badges.</h2>
+            <p className="section-kicker">HOW I THINK IN HEALTHCARE WORKFLOWS</p>
+            <h2>A living healthcare thought-map shaped like a responsive clinical support brain.</h2>
             <p>
-              Instead of clumped text bubbles, this section now treats your
-              healthcare stack as interactive floating elements that drift,
-              separate, and react to the cursor.
+              This section represents how I organize healthcare support work in
+              my mind: charts, referrals, intake, claims, scheduling, telehealth,
+              documentation, and follow-through all working together as one system.
             </p>
           </div>
 
@@ -597,36 +596,28 @@ export default function App() {
 
         <section className="tools-section" id="tools" data-reveal>
           <div className="tools-copy" data-reveal style={{ transitionDelay: "80ms" }}>
-            <p className="section-kicker">TOOLS I CAN WORK WITH</p>
-            <h2>Digital platforms I can use to support patient coordination, records flow, and daily healthcare admin work.</h2>
+            <p className="section-kicker">TOOLS I USE AND CAN ADAPT TO</p>
+            <h2>I work best in organized systems that help me manage schedules, records, communication, and day-to-day healthcare support tasks.</h2>
             <p>
-              This section presents common healthcare support tools in a more
-              visual way, showing the kind of systems connected to scheduling,
-              inbox support, intake, chart-related admin tasks, and organized
-              follow-through for clinics and providers.
+              As I move into Medical VA and Healthcare VA work, these are the
+              kinds of platforms I can work in and adapt to quickly so I can
+              support clinics, providers, and healthcare teams with professionalism,
+              structure, and follow-through.
             </p>
 
             <div className="tool-focus-panel">
-              <p className="focus-kicker">Current focus</p>
+              <p className="focus-kicker">Tool spotlight</p>
               <h3>{currentTool.label}</h3>
               <p>{currentTool.detail}</p>
             </div>
           </div>
 
           <div className="keyboard-scene" data-reveal style={{ transitionDelay: "180ms" }}>
-            <div className="keyboard-copy-angle">
-              scheduling, records support, inbox management, patient coordination
-            </div>
-
             <div className="keyboard-meta">
               <span className="keyboard-title">TOOLS</span>
             </div>
 
             <div className="keyboard-stage">
-              <button className="keyboard-arrow keyboard-arrow-left" aria-label="Previous tools" type="button">
-                &lt;
-              </button>
-
               <div className="keyboard-board" ref={boardRef}>
                 {toolKeys.map((tool, index) => (
                   <button
@@ -658,10 +649,6 @@ export default function App() {
                   </button>
                 ))}
               </div>
-
-              <button className="keyboard-arrow keyboard-arrow-right" aria-label="Next tools" type="button">
-                &gt;
-              </button>
             </div>
           </div>
         </section>
@@ -681,14 +668,14 @@ export default function App() {
               <ModelStage
                 assetPath="/models/nurse-desk.glb"
                 className="desk-model-stage"
-                modelScale={2.08}
-                modelPosition={[0, -2.45, 0]}
-                modelRotation={[0, -0.42, 0]}
-                floatStrength={0.05}
-                cameraPosition={[0, -0.18, 6.3]}
-                cameraFov={28}
-                shadowY={-3.1}
-                shadowScale={12.5}
+                modelScale={2.85}
+                modelPosition={[0, -3.65, 0]}
+                modelRotation={[0, -0.38, 0]}
+                floatStrength={0.04}
+                cameraPosition={[0, 0.95, 10.9]}
+                cameraFov={34}
+                shadowY={-4.9}
+                shadowScale={16}
               />
             </Suspense>
           </div>
@@ -712,7 +699,6 @@ export default function App() {
                     </span>
                   ))}
                 </div>
-                <span className="service-arrow" />
               </article>
             ))}
           </div>
@@ -723,9 +709,8 @@ export default function App() {
             <p className="section-kicker">EXPERIENCE</p>
             <h2>Professional background positioned for healthcare clients and agencies.</h2>
             <p>
-              The details below come directly from your resume, but they are
-              now presented in a cleaner premium layout that supports your
-              transition into remote healthcare assistance.
+              The details below come directly from my resume, presented in a cleaner
+              premium format that supports my transition into remote healthcare assistance.
             </p>
           </div>
 
