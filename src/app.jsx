@@ -669,7 +669,7 @@ export default function App() {
                 assetPath="/models/nurse-desk.glb"
                 className="desk-model-stage"
                 modelScale={2.85}
-                modelPosition={[0, -3.65, 0]}
+                modelPosition={[0, -1.35, 0]}
                 modelRotation={[0, -0.38, 0]}
                 floatStrength={0.04}
                 cameraPosition={[0, 0.95, 10.9]}
