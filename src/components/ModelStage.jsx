@@ -122,7 +122,11 @@ export default function ModelStage({
 
   return (
     <div className={`model-stage ${className}`}>
-      <Canvas camera={{ position: cameraPosition, fov: cameraFov }} dpr={[1, 2]}>
+      <Canvas
+        camera={{ position: cameraPosition, fov: cameraFov }}
+        dpr={[1, 2]}
+        gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+      >
         <ambientLight intensity={1.45} />
         <directionalLight position={[5, 7, 5]} intensity={2.2} color="#fff7ef" />
         <pointLight position={[-4, 2, 4]} intensity={1.4} color="#bbf7ff" />
