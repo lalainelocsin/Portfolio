@@ -81,19 +81,24 @@ function NurseModel() {
           </p>
 
           <button
-            onClick={() => alert("Contact clicked")}
-            style={{
-              marginTop: "10px",
-              padding: "8px",
-              width: "100%",
-              border: "none",
-              borderRadius: "5px",
-              background: "#00ffd0",
-              cursor: "pointer"
-            }}
-          >
-            Contact Me
-          </button>
+  onClick={() => window.open("mailto:work.lalainelocsin@gmail.com")}
+  style={{
+    marginTop: "10px",
+    padding: "10px",
+    width: "100%",
+    border: "none",
+    borderRadius: "6px",
+    background: "linear-gradient(135deg, #00ffd0, #00aaff)",
+    color: "#000",
+    fontWeight: "bold",
+    cursor: "pointer",
+    transition: "0.3s"
+  }}
+  onMouseEnter={(e) => e.target.style.transform = "scale(1.05)"}
+  onMouseLeave={(e) => e.target.style.transform = "scale(1)"}
+>
+  Contact Me
+</button>
         </div>
       </Html>
     </>
