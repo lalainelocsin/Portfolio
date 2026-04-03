@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { Suspense, lazy, useEffect, useRef, useState } from "react";
 import {
   SiAsana,
   SiCalendly,
@@ -37,9 +37,10 @@ import {
 } from "react-icons/fa6";
 import { HiOutlineClipboardDocumentCheck, HiOutlineEnvelope } from "react-icons/hi2";
 import { MdOutlinePhoneInTalk } from "react-icons/md";
-import MedicalBubbles from "./components/MedicalBubbles";
-import ModelStage from "./components/ModelStage";
 import "./app.css";
+
+const MedicalBubbles = lazy(() => import("./components/MedicalBubbles"));
+const ModelStage = lazy(() => import("./components/ModelStage"));
 
 const profile = {
   name: "Lalaine R. Locsin, RN",
@@ -86,9 +87,9 @@ const heroStrengths = [
 ];
 
 const stackHighlights = [
-  "Healthcare terminology and workflow familiarity",
-  "Clinical admin support language presented with animated icon badges",
-  "Cursor-reactive motion so the cluster feels alive while scrolling",
+  "Hospital-based workflow familiarity",
+  "Healthcare terms and equipment cues shown as animated icon badges",
+  "Responsive motion designed for desktop, tablet, and mobile viewing",
 ];
 
 const toolKeys = [
@@ -492,19 +493,21 @@ export default function App() {
               </span>
             ))}
 
-            <ModelStage
-              assetPath="/models/nurse-hero.glb"
-              className="hero-model-stage"
-              modelScale={2.45}
-              modelPosition={[0, -2.35, 0]}
-              modelRotation={[0, 0.18, 0]}
-              floatStrength={0.18}
-              cameraPosition={[0, 0.45, 5.55]}
-              cameraFov={25}
-              shadowY={-3}
-              shadowScale={13}
-              trackEyes
-            />
+            <Suspense fallback={<div className="model-stage model-stage-fallback hero-model-stage" />}>
+              <ModelStage
+                assetPath="/models/nurse-hero.glb"
+                className="hero-model-stage"
+                modelScale={2.55}
+                modelPosition={[0, -2.25, 0]}
+                modelRotation={[0, 0.18, 0]}
+                floatStrength={0.18}
+                cameraPosition={[0, 0.38, 5.35]}
+                cameraFov={24}
+                shadowY={-3.05}
+                shadowScale={13.5}
+                trackEyes
+              />
+            </Suspense>
           </div>
 
           <div className="hero-copy hero-copy-right" data-reveal style={{ transitionDelay: "240ms" }}>
@@ -586,19 +589,21 @@ export default function App() {
           </div>
 
           <div className="stack-stage" data-reveal style={{ transitionDelay: "220ms" }}>
-            <MedicalBubbles />
+            <Suspense fallback={<div className="stack-loading" />}>
+              <MedicalBubbles />
+            </Suspense>
           </div>
         </section>
 
         <section className="tools-section" id="tools" data-reveal>
           <div className="tools-copy" data-reveal style={{ transitionDelay: "80ms" }}>
-            <p className="section-kicker">INTERACTIVE TOOLS KEYBOARD</p>
-            <h2>Literal tool logos rebuilt as a premium dimensional keyboard.</h2>
+            <p className="section-kicker">TOOLS I CAN WORK WITH</p>
+            <h2>Digital platforms I can use to support patient coordination, records flow, and daily healthcare admin work.</h2>
             <p>
-              Hovering a key should feel like pressing a real control surface,
-              not a flat grid. This section is focused on remote healthcare
-              support tools used for scheduling, intake, inbox handling, and
-              documentation flow.
+              This section presents common healthcare support tools in a more
+              visual way, showing the kind of systems connected to scheduling,
+              inbox support, intake, chart-related admin tasks, and organized
+              follow-through for clinics and providers.
             </p>
 
             <div className="tool-focus-panel">
@@ -610,7 +615,7 @@ export default function App() {
 
           <div className="keyboard-scene" data-reveal style={{ transitionDelay: "180ms" }}>
             <div className="keyboard-copy-angle">
-              inbox handling, telehealth support, patient scheduling, chart prep
+              scheduling, records support, inbox management, patient coordination
             </div>
 
             <div className="keyboard-meta">
@@ -672,18 +677,20 @@ export default function App() {
 
           <div className="whatido-stage" data-reveal style={{ transitionDelay: "160ms" }}>
             <div className="desk-stage-orb" />
-            <ModelStage
-              assetPath="/models/nurse-desk.glb"
-              className="desk-model-stage"
-              modelScale={1.9}
-              modelPosition={[0, -2, 0]}
-              modelRotation={[0, -0.42, 0]}
-              floatStrength={0.06}
-              cameraPosition={[0, 0.2, 5]}
-              cameraFov={25}
-              shadowY={-2.75}
-              shadowScale={12}
-            />
+            <Suspense fallback={<div className="model-stage model-stage-fallback desk-model-stage" />}>
+              <ModelStage
+                assetPath="/models/nurse-desk.glb"
+                className="desk-model-stage"
+                modelScale={2.08}
+                modelPosition={[0, -2.45, 0]}
+                modelRotation={[0, -0.42, 0]}
+                floatStrength={0.05}
+                cameraPosition={[0, -0.18, 6.3]}
+                cameraFov={28}
+                shadowY={-3.1}
+                shadowScale={12.5}
+              />
+            </Suspense>
           </div>
 
           <div className="service-cards">
@@ -772,7 +779,7 @@ export default function App() {
             <p className="section-kicker">CONTACT DETAILS</p>
             <h2>{profile.name}</h2>
             <p>
-              {profile.location} · {profile.phone}
+              {profile.location} | {profile.phone}
             </p>
           </div>
 
