@@ -18,6 +18,7 @@ import {
   SiZoom,
 } from "react-icons/si";
 import {
+  FaChevronUp,
   FaFacebookF,
   FaFileLines,
   FaFileWaveform,
@@ -295,12 +296,21 @@ const footerLinks = [
   },
 ];
 
+const navItems = [
+  { id: "stack", label: "Stack" },
+  { id: "tools", label: "Tools" },
+  { id: "services", label: "Work" },
+  { id: "contact", label: "Contact" },
+];
+
 export default function App() {
   const pageRef = useRef(null);
   const boardRef = useRef(null);
   const [cursorVisible, setCursorVisible] = useState(false);
   const [activeTool, setActiveTool] = useState(0);
   const [pressedTool, setPressedTool] = useState(null);
+  const [activeSection, setActiveSection] = useState("home");
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const page = pageRef.current;
@@ -358,6 +368,51 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    const ids = ["home", "stack", "tools", "services", "contact"];
+    const sections = ids.map((id) => document.getElementById(id)).filter(Boolean);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -55% 0px" }
+    );
+
+    sections.forEach((s) => observer.observe(s));
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? scrollTop / docHeight : 0;
+
+      const bar = document.querySelector(".scroll-progress-bar");
+      if (bar) bar.style.transform = `scaleX(${progress})`;
+
+      const btn = document.querySelector(".scroll-top-btn");
+      if (btn) btn.classList.toggle("is-visible", scrollTop > 600);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 640) setMenuOpen(false);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
     const board = boardRef.current;
 
     if (!board) {
@@ -408,6 +463,10 @@ export default function App() {
 
   return (
     <div className="page-shell" ref={pageRef}>
+      <div className="scroll-progress">
+        <div className="scroll-progress-bar" />
+      </div>
+
       <div className="page-aurora page-aurora-one" />
       <div className="page-aurora page-aurora-two" />
       <div className="page-aurora page-aurora-three" />
@@ -428,11 +487,31 @@ export default function App() {
           {profile.email}
         </a>
 
-        <nav className="header-nav" aria-label="Main navigation">
-          <a href="#stack">Stack</a>
-          <a href="#tools">Tools</a>
-          <a href="#services">Work</a>
-          <a href="#contact">Contact</a>
+        <button
+          className={`menu-toggle${menuOpen ? " is-open" : ""}`}
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Toggle menu"
+          type="button"
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+
+        <nav
+          className={`header-nav${menuOpen ? " is-open" : ""}`}
+          aria-label="Main navigation"
+        >
+          {navItems.map((item) => (
+            <a
+              key={item.id}
+              href={`#${item.id}`}
+              className={activeSection === item.id ? "is-active" : ""}
+              onClick={() => setMenuOpen(false)}
+            >
+              {item.label}
+            </a>
+          ))}
         </nav>
       </header>
 
@@ -605,7 +684,7 @@ export default function App() {
               structure, and follow-through.
             </p>
 
-            <div className="tool-focus-panel">
+            <div className="tool-focus-panel" key={activeTool}>
               <p className="focus-kicker">Tool spotlight</p>
               <h3>{currentTool.label}</h3>
               <p>{currentTool.detail}</p>
@@ -791,6 +870,15 @@ export default function App() {
           </div>
         </footer>
       </main>
+
+      <button
+        className="scroll-top-btn"
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        aria-label="Scroll to top"
+        type="button"
+      >
+        <FaChevronUp />
+      </button>
     </div>
   );
 }
