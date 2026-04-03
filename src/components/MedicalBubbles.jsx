@@ -34,6 +34,8 @@ const bubbleItems = [
 
 function Bubble({ item, index, positionsRef, velocitiesRef }) {
   const ref = useRef(null);
+  const tempVec = useRef(new THREE.Vector3());
+  const pointerVec = useRef(new THREE.Vector3());
 
   useFrame((state, delta) => {
     if (!ref.current) {
@@ -41,7 +43,7 @@ function Bubble({ item, index, positionsRef, velocitiesRef }) {
     }
 
     const deltaFactor = Math.min(delta * 60, 1.6);
-    const pointer = new THREE.Vector3(state.pointer.x * 4.8, state.pointer.y * 3.1, 0.6);
+    pointerVec.current.set(state.pointer.x * 4.8, state.pointer.y * 3.1, 0.6);
     const position = positionsRef.current[index];
     const velocity = velocitiesRef.current[index];
     const home = item.position;
@@ -50,12 +52,12 @@ function Bubble({ item, index, positionsRef, velocitiesRef }) {
     velocity.y += (home[1] - position.y) * 0.013 * deltaFactor;
     velocity.z += (home[2] - position.z) * 0.011 * deltaFactor;
 
-    const away = position.clone().sub(pointer);
-    const distance = away.length();
+    tempVec.current.copy(position).sub(pointerVec.current);
+    const distance = tempVec.current.length();
 
     if (distance < 2.25) {
-      away.normalize();
-      velocity.addScaledVector(away, (2.25 - distance) * 0.05 * deltaFactor);
+      tempVec.current.normalize();
+      velocity.addScaledVector(tempVec.current, (2.25 - distance) * 0.05 * deltaFactor);
     }
 
     for (let i = 0; i < positionsRef.current.length; i += 1) {
@@ -64,13 +66,13 @@ function Bubble({ item, index, positionsRef, velocitiesRef }) {
       }
 
       const other = positionsRef.current[i];
-      const deltaPos = position.clone().sub(other);
+      tempVec.current.copy(position).sub(other);
       const minDistance = item.size + bubbleItems[i].size + 0.26;
-      const currentDistance = deltaPos.length();
+      const currentDistance = tempVec.current.length();
 
       if (currentDistance > 0 && currentDistance < minDistance) {
-        deltaPos.normalize();
-        velocity.addScaledVector(deltaPos, (minDistance - currentDistance) * 0.014 * deltaFactor);
+        tempVec.current.normalize();
+        velocity.addScaledVector(tempVec.current, (minDistance - currentDistance) * 0.014 * deltaFactor);
       }
     }
 
@@ -86,7 +88,7 @@ function Bubble({ item, index, positionsRef, velocitiesRef }) {
     <Float speed={1.05} rotationIntensity={0.05} floatIntensity={0.16}>
       <group ref={ref} position={item.position}>
         <mesh castShadow receiveShadow>
-          <sphereGeometry args={[item.size, 56, 56]} />
+          <sphereGeometry args={[item.size, 32, 32]} />
           <meshPhysicalMaterial
             color={item.shell}
             roughness={0.15}
