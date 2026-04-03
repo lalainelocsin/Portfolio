@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Center, ContactShadows, Float, useGLTF } from "@react-three/drei";
+import { Center, Float, useGLTF } from "@react-three/drei";
 import { clone } from "three/examples/jsm/utils/SkeletonUtils.js";
 
 function LoadedModel({
@@ -70,13 +70,28 @@ function LoadedModel({
   });
 
   return (
-    <Float speed={1.5} rotationIntensity={0.08} floatIntensity={floatStrength}>
+    <Float speed={1.4} rotationIntensity={0.08} floatIntensity={floatStrength}>
       <group ref={groupRef} position={modelPosition} rotation={modelRotation}>
         <Center>
           <primitive object={clonedScene} scale={modelScale} />
         </Center>
       </group>
     </Float>
+  );
+}
+
+function SoftGroundShadow({ y, scale }) {
+  return (
+    <group position={[0, y, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+      <mesh scale={[1.45, 0.8, 1]}>
+        <circleGeometry args={[scale * 0.46, 64]} />
+        <meshBasicMaterial color="#020305" transparent opacity={0.14} />
+      </mesh>
+      <mesh position={[0, 0.01, 0]} scale={[0.9, 0.48, 1]}>
+        <circleGeometry args={[scale * 0.32, 64]} />
+        <meshBasicMaterial color="#020305" transparent opacity={0.24} />
+      </mesh>
+    </group>
   );
 }
 
@@ -124,13 +139,14 @@ export default function ModelStage({
     <div className={`model-stage ${className}`}>
       <Canvas
         camera={{ position: cameraPosition, fov: cameraFov }}
-        dpr={[1, 2]}
+        dpr={[1, 1.6]}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       >
-        <ambientLight intensity={1.45} />
-        <directionalLight position={[5, 7, 5]} intensity={2.2} color="#fff7ef" />
-        <pointLight position={[-4, 2, 4]} intensity={1.4} color="#bbf7ff" />
-        <pointLight position={[3, -1, 5]} intensity={1.2} color="#f4acff" />
+        <ambientLight intensity={1.35} />
+        <directionalLight position={[5, 7, 5]} intensity={2.1} color="#fff7ef" />
+        <pointLight position={[-4, 2, 4]} intensity={1.25} color="#bbf7ff" />
+        <pointLight position={[3, -1, 5]} intensity={1.1} color="#f4acff" />
+
         <Suspense fallback={null}>
           <LoadedModel
             assetPath={assetPath}
@@ -142,13 +158,8 @@ export default function ModelStage({
             followStrength={followStrength}
           />
         </Suspense>
-        <ContactShadows
-          position={[0, shadowY, 0]}
-          opacity={0.35}
-          scale={shadowScale}
-          blur={2.5}
-          far={4.2}
-        />
+
+        <SoftGroundShadow y={shadowY} scale={shadowScale} />
       </Canvas>
     </div>
   );
