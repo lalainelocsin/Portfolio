@@ -212,6 +212,309 @@ canvas {
   transform: translate(-50%, -50%);
 }
 
+/* ═══════════════════════════════════════
+   SYRINGE – scroll-driven animation
+   ═══════════════════════════════════════ */
+
+.syringe-container {
+  --syringe-fill: 1;
+  position: fixed;
+  right: 2.8rem;
+  top: 50%;
+  z-index: 45;
+  transform: translateY(-50%);
+  pointer-events: none;
+  transition: opacity 400ms ease;
+}
+
+.syringe {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  filter: drop-shadow(0 12px 32px rgba(0, 0, 0, 0.35));
+}
+
+/* Plunger group */
+.syringe-plunger {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* T-shaped handle (thumb rest) */
+.syringe-handle {
+  width: 56px;
+  height: 14px;
+  border-radius: 7px;
+  background: linear-gradient(180deg, #d8dfe8, #b0b8cc 40%, #a0a8be 60%, #c4cbdc);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 3px 10px rgba(0, 0, 0, 0.3);
+  transition: transform 200ms var(--ease-spring), box-shadow 200ms ease;
+}
+
+/* Press animation on handle */
+.syringe-container.is-pressing .syringe-handle {
+  transform: scaleY(0.8) scaleX(1.04);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Plunger rod – shrinks as fill decreases */
+.syringe-rod {
+  width: 8px;
+  height: calc(var(--syringe-fill) * 140px);
+  min-height: 6px;
+  background: linear-gradient(90deg, #98a0b8, #c4cce0 35%, #dce2f0 50%, #c4cce0 65%, #98a0b8);
+  border-radius: 2px;
+  transition: height 140ms ease-out;
+  box-shadow:
+    inset 1px 0 0 rgba(255, 255, 255, 0.2),
+    inset -1px 0 0 rgba(0, 0, 0, 0.12);
+}
+
+/* Glass barrel */
+.syringe-barrel {
+  position: relative;
+  width: 44px;
+  height: 190px;
+  border-radius: 6px 6px 4px 4px;
+  background:
+    repeating-linear-gradient(
+      180deg,
+      transparent,
+      transparent 18px,
+      rgba(255, 255, 255, 0.1) 18px,
+      rgba(255, 255, 255, 0.1) 19px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(200, 215, 240, 0.06),
+      rgba(225, 235, 255, 0.13) 35%,
+      rgba(200, 215, 240, 0.04) 65%,
+      rgba(190, 205, 230, 0.08)
+    );
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  box-shadow:
+    inset 3px 0 12px rgba(255, 255, 255, 0.04),
+    inset -3px 0 12px rgba(0, 0, 0, 0.08),
+    0 8px 28px rgba(0, 0, 0, 0.25);
+}
+
+/* Glass reflection / glare */
+.syringe-barrel::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  bottom: 6px;
+  width: 3px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.24),
+    rgba(255, 255, 255, 0.06) 30%,
+    rgba(255, 255, 255, 0.18) 70%,
+    rgba(255, 255, 255, 0.1)
+  );
+  border-radius: 2px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* Rubber stopper inside barrel */
+.syringe-barrel::after {
+  content: "";
+  position: absolute;
+  top: calc((1 - var(--syringe-fill)) * (100% - 14px));
+  left: 2px;
+  right: 2px;
+  height: 14px;
+  background: linear-gradient(180deg, #3ab8a6, #1e8e80, #2fa899);
+  border-radius: 3px;
+  z-index: 4;
+  transition: top 140ms ease-out;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Yellow liquid */
+.syringe-liquid {
+  position: absolute;
+  bottom: 0;
+  left: 2px;
+  right: 2px;
+  height: calc(var(--syringe-fill) * 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 235, 110, 0.92),
+    rgba(255, 195, 60, 0.95) 50%,
+    rgba(255, 175, 40, 0.9)
+  );
+  border-radius: 0 0 2px 2px;
+  transition: height 140ms ease-out;
+  box-shadow:
+    inset 0 6px 16px rgba(255, 215, 60, 0.3),
+    0 0 14px rgba(255, 195, 60, 0.12);
+  z-index: 3;
+}
+
+/* Liquid surface highlight */
+.syringe-liquid::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 2px;
+  right: 2px;
+  height: 5px;
+  background: linear-gradient(180deg, rgba(255, 245, 170, 0.7), transparent);
+  border-radius: 2px;
+}
+
+/* Liquid subtle bubbles */
+.syringe-liquid::after {
+  content: "";
+  position: absolute;
+  top: 18%;
+  left: 22%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, rgba(255, 255, 220, 0.5), transparent 70%);
+  box-shadow:
+    12px 14px 0 3px radial-gradient(circle, rgba(255, 255, 220, 0.3), transparent),
+    8px 40px 0 2px rgba(255, 255, 220, 0.25);
+}
+
+/* Hub (barrel → needle connector) */
+.syringe-hub {
+  width: 18px;
+  height: 14px;
+  background: linear-gradient(180deg, #c0c8d8, #90a0b4 50%, #b0b8cc);
+  border-radius: 2px 2px 4px 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.22);
+}
+
+/* Needle */
+.syringe-needle {
+  position: relative;
+  width: 3px;
+  height: 52px;
+  background: linear-gradient(
+    90deg,
+    #7888a0,
+    #b8c8e0 35%,
+    #dce6f4 50%,
+    #b8c8e0 65%,
+    #7888a0
+  );
+}
+
+/* Liquid trace inside needle */
+.syringe-needle::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 1px;
+  margin: 0 auto;
+  background: rgba(255, 200, 60, 0.45);
+  opacity: var(--syringe-fill);
+  transition: opacity 300ms ease;
+}
+
+/* Needle bevel tip */
+.syringe-needle::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 2.5px solid transparent;
+  border-right: 2.5px solid transparent;
+  border-top: 9px solid #c0cce0;
+}
+
+/* Drip zone below needle */
+.syringe-drip-zone {
+  position: relative;
+  width: 20px;
+  height: 100px;
+}
+
+/* Drip gathering glow at needle tip */
+.syringe-drip-zone::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  width: 8px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 210, 60, 0.6);
+  transform: translateX(-50%) scale(0);
+  transition: transform 220ms var(--ease-spring);
+}
+
+.syringe-container.is-dripping .syringe-drip-zone::before {
+  transform: translateX(-50%) scale(1);
+}
+
+/* Individual drops */
+.syringe-drop {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 7px;
+  height: 9px;
+  background: radial-gradient(circle at 35% 30%, #ffe88a, #ffb838);
+  border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+  transform: translateX(-50%) scale(0);
+  opacity: 0;
+  box-shadow: 0 0 12px rgba(255, 195, 60, 0.5);
+  pointer-events: none;
+}
+
+.syringe-container.is-dripping .syringe-drop {
+  animation: syringeDrip 1s ease-in infinite;
+}
+
+.syringe-container.is-dripping .syringe-drop:nth-child(2) {
+  animation-delay: 0.33s;
+}
+
+.syringe-container.is-dripping .syringe-drop:nth-child(3) {
+  animation-delay: 0.66s;
+}
+
+/* Ambient glow around syringe when liquid is high */
+.syringe::after {
+  content: "";
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  width: 80px;
+  height: 200px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 210, 80, 0.08), transparent 60%);
+  opacity: var(--syringe-fill);
+  pointer-events: none;
+  z-index: -1;
+  transition: opacity 300ms ease;
+}
+
+/* ═══════════════════════════════════════ */
+
 .site-header,
 main {
   width: min(1480px, calc(100% - 2.4rem));
@@ -1512,93 +1815,83 @@ section {
   transition-duration: 80ms;
 }
 
-@keyframes drift {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
+/* ═══════════════════════════════════════
+   KEYFRAMES
+   ═══════════════════════════════════════ */
 
-  to {
-    transform: translate3d(24px, -18px, 0);
-  }
+@keyframes drift {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(24px, -18px, 0); }
 }
 
 @keyframes headerSweep {
-  from {
-    transform: translateX(-100%);
-  }
-
-  to {
-    transform: translateX(100%);
-  }
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
 }
 
 @keyframes headerSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-24px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-24px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes slowSpin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 @keyframes pillFloat {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-10px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
 @keyframes spotlightFade {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fallbackPulse {
-  0%,
-  100% {
-    opacity: 0.6;
-  }
-
-  50% {
-    opacity: 1;
-  }
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
 }
 
 @keyframes navDropdown {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-  to {
+@keyframes syringeDrip {
+  0% {
+    top: 0;
+    opacity: 0;
+    transform: translateX(-50%) scale(0);
+  }
+  8% {
+    top: 0;
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(-50%) scale(1);
+  }
+  14% {
+    top: 4px;
+    transform: translateX(-50%) scaleX(1.15) scaleY(0.85);
+  }
+  22% {
+    top: 8px;
+    opacity: 1;
+    transform: translateX(-50%) scaleX(0.7) scaleY(1.5);
+  }
+  40% {
+    opacity: 0.8;
+  }
+  100% {
+    top: 100px;
+    opacity: 0;
+    transform: translateX(-50%) scaleX(0.5) scaleY(2.2);
   }
 }
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════ */
 
 @media (pointer: coarse) {
   body,
@@ -1666,6 +1959,11 @@ section {
     height: 46rem;
     margin-top: -4rem;
   }
+
+  .syringe-container {
+    right: 1rem;
+    transform: translateY(-50%) scale(0.78);
+  }
 }
 
 @media (max-width: 900px) {
@@ -1725,6 +2023,10 @@ section {
 
   .footer-link-grid {
     grid-template-columns: 1fr;
+  }
+
+  .syringe-container {
+    display: none;
   }
 }
 
