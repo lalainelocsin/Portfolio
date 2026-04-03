@@ -387,6 +387,9 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    let lastScrollTop = 0;
+    let dripTimer = null;
+
     const handleScroll = () => {
       const scrollTop = window.scrollY;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -397,10 +400,34 @@ export default function App() {
 
       const btn = document.querySelector(".scroll-top-btn");
       if (btn) btn.classList.toggle("is-visible", scrollTop > 600);
+
+      const syringe = document.querySelector(".syringe-container");
+      if (syringe) {
+        const fill = Math.max(0, Math.min(1, 1 - progress));
+        syringe.style.setProperty("--syringe-fill", fill);
+
+        const isDown = scrollTop > lastScrollTop;
+        if (isDown && progress > 0.01 && progress < 0.99) {
+          syringe.classList.add("is-dripping");
+          syringe.classList.add("is-pressing");
+          clearTimeout(dripTimer);
+          dripTimer = setTimeout(() => {
+            syringe.classList.remove("is-dripping");
+            syringe.classList.remove("is-pressing");
+          }, 500);
+        } else if (!isDown) {
+          syringe.classList.remove("is-pressing");
+        }
+      }
+
+      lastScrollTop = scrollTop;
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      clearTimeout(dripTimer);
+    };
   }, []);
 
   useEffect(() => {
@@ -475,6 +502,26 @@ export default function App() {
       <div className={`health-cursor${cursorVisible ? " is-visible" : ""}`}>
         <div className="health-cursor-ring" />
         <div className="health-cursor-core">+</div>
+      </div>
+
+      {/* ── Scroll-driven syringe ── */}
+      <div className="syringe-container">
+        <div className="syringe">
+          <div className="syringe-plunger">
+            <div className="syringe-handle" />
+            <div className="syringe-rod" />
+          </div>
+          <div className="syringe-barrel">
+            <div className="syringe-liquid" />
+          </div>
+          <div className="syringe-hub" />
+          <div className="syringe-needle" />
+          <div className="syringe-drip-zone">
+            <span className="syringe-drop" />
+            <span className="syringe-drop" />
+            <span className="syringe-drop" />
+          </div>
+        </div>
       </div>
 
       <header className="site-header">
